@@ -23,6 +23,12 @@ class ContactFormController
 
     public function saveData(Request $request)
     {
+        if (isset($_COOKIE["form_submission"])) {
+            return responseJson([
+                "message" => "You have Already submitted a item"
+            ], 422);
+        }
+
         $check = Validator::execute($request, [
             'amount' => 'required|number',
             'buyer' => 'required|noSpecialChar|limit:5,50',
@@ -41,6 +47,8 @@ class ContactFormController
         try {
             $purchase = new Contact();
             $insert = $purchase->insert($request);
+
+            setcookie('form_submission', 'formSubmitted', time() + 86400);
 
         } catch (Exception $e) {
             return responseJson([

@@ -182,7 +182,7 @@ include_once 'layout/header.php';
             } else {
                 webToast.Danger({
                     status: 'Sorry !',
-                    message: 'Something went wrong. Please check your input'
+                    message: 'Something went wrong.'
                 });
             }
 
