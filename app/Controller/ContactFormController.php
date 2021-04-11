@@ -25,7 +25,7 @@ class ContactFormController
     {
         if (isset($_COOKIE["form_submission"])) {
             return responseJson([
-                "message" => "You have Already submitted a item"
+                "message" => "You have Already submitted an item"
             ], 422);
         }
 
