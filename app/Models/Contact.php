@@ -7,12 +7,14 @@ namespace App\Models;
 use App\System\Model;
 use App\System\Request;
 use App\Utilities\Common;
+use Exception;
+use PDOException;
 
 class Contact extends Model
 {
 
     protected $table = 'contacts';
-    
+
 
     public function insert(Request $request)
     {
@@ -22,7 +24,7 @@ class Contact extends Model
 
             $items = '';
             foreach ($request->get('items') as $key => $item) {
-                $items .= $item . ', ';
+                $items .= $item.', ';
             }
 
             $data = [
@@ -41,16 +43,14 @@ class Contact extends Model
             ];
 
 
-
             $stmt->execute($data);
 
-        } catch (\PDOException $e) {
-            throw new \Exception($e->getMessage());
+        } catch (PDOException $e) {
+            throw new Exception($e->getMessage());
         }
 
         return 'Created successfully';
     }
-
 
 
 }

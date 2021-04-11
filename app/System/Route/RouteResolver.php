@@ -82,7 +82,7 @@ class RouteResolver
         if (gettype($method) == 'object') {
             return call_user_func($method);
         } else {
-            //  return responseJson($methodDictionary);
+
             return DependencyContainer::instance()->call($method);
         }
 

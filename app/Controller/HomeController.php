@@ -5,9 +5,7 @@ namespace App\Controller;
 
 
 use App\Models\Contact;
-use App\System\Helper\EnvManager;
 use App\System\Middleware\DatabaseSetup;
-use App\System\Request;
 
 class HomeController
 {
@@ -18,7 +16,7 @@ class HomeController
     }
 
     public function home()
-    { 
+    {
         $contacts = new Contact();
 
         return view('index', [

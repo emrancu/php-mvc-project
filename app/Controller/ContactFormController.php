@@ -6,6 +6,7 @@ use App\Models\Contact;
 use App\System\Middleware\DatabaseSetup;
 use App\System\Request;
 use App\System\Validator\Validator;
+use Exception;
 
 class ContactFormController
 {
@@ -37,15 +38,15 @@ class ContactFormController
             return responseJson($check, 422);
         }
 
-        try{
+        try {
             $purchase = new Contact();
             $insert = $purchase->insert($request);
 
-        }catch (\Exception $e) {
-           return responseJson([
-               "message" => "Something went wrong",
-               "error"=> $e->getMessage()
-           ], 422);
+        } catch (Exception $e) {
+            return responseJson([
+                "message" => "Something went wrong",
+                "error" => $e->getMessage()
+            ], 422);
         }
 
         sessionFlash('message', "Insert Successfully");

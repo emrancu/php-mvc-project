@@ -12,9 +12,8 @@ class RouteManager
     function init()
     {
         $router = new RouteResolver();
-        require_once ConstantManager::$appRoot . '/route/route.php';
+        require_once ConstantManager::$appRoot.'/route/route.php';
     }
-
 
 
 }

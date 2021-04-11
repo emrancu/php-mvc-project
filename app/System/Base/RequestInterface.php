@@ -1,9 +1,9 @@
 <?php
+
 namespace App\System\Base;
 
 interface RequestInterface
 {
-
 
 
     /**
@@ -31,7 +31,6 @@ interface RequestInterface
      * @return mixed|string
      */
     public function makeCamelCase($string);
-
 
 
     /**

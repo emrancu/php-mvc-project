@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\config\DatabaseConfig;
 use App\utilities\Common;
+use PDOException;
 
 class Purchase extends DatabaseConfig
 {
@@ -20,7 +21,7 @@ class Purchase extends DatabaseConfig
 
             $items = '';
             foreach ($this->request->get('items') as $key => $item) {
-                $items .= $item . ', ';
+                $items .= $item.', ';
             }
             $data = [
                 'amount' => $this->request->get('amount'),
@@ -40,8 +41,8 @@ class Purchase extends DatabaseConfig
 
             $stmt->execute($data);
 
-        } catch (\PDOException $e) {
-            return "Error: " . $e->getMessage();
+        } catch (PDOException $e) {
+            return "Error: ".$e->getMessage();
         }
 
         return 'Created successfully';

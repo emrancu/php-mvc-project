@@ -5,7 +5,6 @@ namespace App\System\Database;
 
 
 use App\System\Database\Driver\MySQL;
-use App\System\DependencyContainer;
 use Exception;
 
 class DBConnection
@@ -16,9 +15,9 @@ class DBConnection
     {
         if (!static::$connection) {
             try {
-                $driver =  new MySQL();
-                static::$connection =  (new DatabaseManager($driver))->connect();
-            } catch (\Exception $e) {
+                $driver = new MySQL();
+                static::$connection = (new DatabaseManager($driver))->connect();
+            } catch (Exception $e) {
                 return responseJson($e->getMessage());
             }
         }

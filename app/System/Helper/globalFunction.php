@@ -2,6 +2,7 @@
 
 
 use App\System\Helper\ConfigReader;
+use App\System\helper\ConstantManager;
 
 
 // unset flush session
@@ -33,7 +34,7 @@ function view($fileName, $data = [])
     if (count($data)) {
         extract($data);
     }
-    require_once \App\System\helper\ConstantManager::$appRoot.'/resources/view/'.$fileName.'.php';
+    require_once ConstantManager::$appRoot.'/resources/view/'.$fileName.'.php';
     unsetFlashSession();
 }
 
@@ -67,7 +68,6 @@ function responseJson($data = [], $code = 200)
 }
 
 
-
 function config($key)
 {
     $config = ConfigReader::init();
@@ -75,25 +75,25 @@ function config($key)
 }
 
 
-
-function url($path = null){
+function url($path = null)
+{
 
     $root = "";
-    $dir = str_replace('\\', '/', realpath(\App\System\helper\ConstantManager::$appRoot));
+    $dir = str_replace('\\', '/', realpath(ConstantManager::$appRoot));
 
     $root .= !empty($_SERVER['HTTPS']) ? 'https' : 'http';
 
-    $root .= '://' . $_SERVER['HTTP_HOST'];
+    $root .= '://'.$_SERVER['HTTP_HOST'];
 
-    if(!empty($_SERVER['CONTEXT_PREFIX'])) {
+    if (!empty($_SERVER['CONTEXT_PREFIX'])) {
         $root .= $_SERVER['CONTEXT_PREFIX'];
-        $root .= substr($dir, strlen($_SERVER[ 'CONTEXT_DOCUMENT_ROOT' ]));
+        $root .= substr($dir, strlen($_SERVER['CONTEXT_DOCUMENT_ROOT']));
     } else {
-        $root .= substr($dir, strlen($_SERVER[ 'DOCUMENT_ROOT' ]));
+        $root .= substr($dir, strlen($_SERVER['DOCUMENT_ROOT']));
     }
 
 
-    if($path &&  $path !== '/'){
+    if ($path && $path !== '/') {
         $root .= '/'.$path;
     }
 

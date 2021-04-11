@@ -5,6 +5,7 @@ namespace App\System;
 
 
 use App\System\Database\DBConnection;
+use PDOException;
 
 class DB
 {
@@ -12,7 +13,7 @@ class DB
 
     public function __construct()
     {
-        $this->connection =  DBConnection::connection() ;
+        $this->connection = DBConnection::connection();
     }
 
     public function run($query)
@@ -21,7 +22,7 @@ class DB
 
         try {
             $insert = $this->connection->exec($query);
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             return json($e->getMessage(), 419);
         }
 

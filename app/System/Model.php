@@ -5,6 +5,7 @@ namespace App\System;
 
 
 use App\System\Database\DBConnection;
+use PDO;
 
 class Model
 {
@@ -14,23 +15,24 @@ class Model
 
     public function __construct()
     {
-        $this->connection =  DBConnection::connection() ;
+        $this->connection = DBConnection::connection();
     }
 
-    public  function get(){
+    public function get()
+    {
         $query = $this->connection->prepare("select * from {$this->table}");
         $query->execute();
-        $query->setFetchMode(\PDO::FETCH_ASSOC);
+        $query->setFetchMode(PDO::FETCH_ASSOC);
         return $query->fetchAll();
     }
 
-    public  function first(){
+    public function first()
+    {
         $query = $this->connection->prepare("select * from {$this->table} LIMIT 1");
         $query->execute();
-        $query->setFetchMode(\PDO::FETCH_ASSOC);
+        $query->setFetchMode(PDO::FETCH_ASSOC);
         return $query->fetch();
     }
 
- 
 
 }

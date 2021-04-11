@@ -3,15 +3,15 @@
 <ul>
  <li> Pull project to your server with git or download 
   <pre>
-  git clone https://github.com/emrancu/php-mvc.git
+  git clone https://github.com/emrancu/php-mvc-project.git
   </pre>
   </li>
 <li>
  Create a Database 
 </li>
- <li> Open Project and submit your database name, user & password </li>
+ <li> Open Project in browser and submit your database name, user & password in a form</li>
  <li> Then Done </li>
-   
+ 
 </ul>
 
 
@@ -21,91 +21,67 @@
 <li>PSR-4 
  <pre>
   "psr-4": {
-      "App\\": "app/",
-      "Route\\": "route/"
+      "App\\": "app/", 
     }
  </pre>
  </li>
-<li>Routing System
-<pre>
-
-$router->get('/', function($request) {
-    $controller =  new HomeController($request) ;
-   return $controller->home();
-});
-
-$router->post('/saveData', function($request) {
-    $controller =  new PurchaseController($request) ;
-   return $controller->saveData();
-});
-
-</pre>
+<li> Simple Routing System
+    <pre>
+    $router->get('/', function($request) {
+        $controller =  new HomeController($request) ;
+       return $controller->home();
+    });
+    
+    $router->get('/', 'HomeController@home'); 
+    
+    $router->get('/database-setup', 'DatabaseSetupController');
+    
+ </pre>
 </li>
-<li> MVC </li>
-<li> Database Configaration setup from Form Input and create db.env file
-<pre>
-   $configData = 'database=' . $this->request->get('database_name') . PHP_EOL;
-        $configData .= 'user_name=' . $this->request->get('user_name') . PHP_EOL;
-        $configData .= 'password=' . $this->request->get('password') . PHP_EOL;
+<li>
+ Dependency Injection Container </li>
+  
+  <pre>
+  namespace -  App\System\Base\Container;
+  
+  DependencyContainer::instance()->call("HomeController@index");
+  DependencyContainer::instance()->call("HomeController", $parameters); // call __invoke method
+  DependencyContainer::instance()->make(HomeController::class, $parameters); // get instance
+  
+  </pre>
 
-        // generate env file
-        DynamicDBConfig::createEnvFile($configData);
+<li> Singleton Pattern </li>
+<li> Dependency Inversion for Database Connection </li>
+<li> MVC </li>
+<li> Database Configuration setup from Form Input and create db.env file
+ <pre>
+        EnvManager::createEnvFile($configData); // create db.env file in /config dir
+        EnvManager::get('host') // get config
   </pre>
   </li>
 <li> Helper Function for redirect , json response, view
- <pre>
- 
-// return as json
-function json($data = [], $code = 200)
-{
-    header_remove();
-    http_response_code($code);
-    header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
-    header('Content-Type: application/json');
-    $status = array(
-        200 => '200 OK',
-        400 => '400 Bad Request',
-        422 => 'Unprocessable Entity',
-        419 => 'Unauthenticated Entity',
-        500 => '500 Internal Server Error'
-    );
-    header('Status: ' . $status[$code]);
-    echo json_encode($data);
-    return;
-}  
-
-
-// redirect expected route
-function redirect($route = '')
-{
-    $dir = dirname($_SERVER['PHP_SELF']);
-    header("Location: " . $dir . $route);
-}
-  
-    
- </pre></li>
+  <pre>
+   responseJson("Something went wrong", 422);
+   redirect('/home');
+   sessionFlash('message', 'Successfully inserted');
+   view('person.create', compact('types')
+   view('person.create',["types" => $types])
+   config('author.name') // get config data from /config/app.php
+   url('home') // generate route url  
+ </pre>
+ </li>
 <li> Data Compact from controller and extract from view and access from View File 
-<pre>
-
+    <pre>
    $purchase = new Purchase();
    $purchaseData = $purchase->getAll();
    return view('index', compact('purchaseData'));
-    
-    
-    
- function view($fileName, $data = [])
-{
-    if (count($data)) {
-        extract($data);
-    }
-    require_once __DIR__ . '/../../view/' . $fileName . '.php';
-    unsetFlashSession();
-}
-        
-</pre>
+   or
+   return view('index', ['purchaseData' => $purchaseData]);
+         
+ </pre>
 </li>
 <li> Flush Session for one-time (reset after page loaded)
-<pre>
+    <pre>
 // unset flush session
 function unsetFlashSession()
 {
@@ -116,24 +92,21 @@ function unsetFlashSession()
     }
 }
 
-
-
-// set or get session
-function sessionFlash($name, $message = '')
-{
-    if ($message) {
-        $_SESSION["app_flash_" . $name] = $message;
-    } else {
-        return $_SESSION["app_flash_" . $name] ?? '';
+    // set or get session
+    function sessionFlash($name, $message = '')
+    {
+        if ($message) {
+            $_SESSION["app_flash_" . $name] = $message;
+        } else {
+            return $_SESSION["app_flash_" . $name] ?? '';
+        }
     }
-}
 </pre>
 </li>
 
 <li>
- Data Validation System  with PHP
-    
- <pre>
+ Data Validation System  with PHP 
+  <pre>
        $check = Validator::execute($this->request, [
             'amount' => 'required|number',
             'buyer' => 'required|noSpecialChar|limit:20,50',
@@ -144,16 +117,15 @@ function sessionFlash($name, $message = '')
             'phone' => 'required|mobile',
             'entry_by' => 'required|number'
         ]);
-
+        
        if (!$check['status']) {
            return json($check, 419);
        }
- <pre>
-    
+  </pre>  
 </li>
 
 <li>
-Input Field Data Validation System with JS:
+Input Field Data Validation System with JS :
  <p>Self Developed: <a href="https://github.com/emrancu/FieldValidator"> Field Validator </a></p>
 </li>
 <li>

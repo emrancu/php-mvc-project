@@ -4,7 +4,6 @@
 namespace App\Controller;
 
 
-use App\Models\Contact;
 use App\models\DBQuery;
 use App\System\DB;
 use App\System\Helper\EnvManager;
@@ -23,16 +22,16 @@ class DatabaseSetupController
 
     public function save(Request $request)
     {
-   //     return responseJson($request->all());
+        //     return responseJson($request->all());
 
-        if (!$request->database_name  || !$request->user_name  || !$request->password) {
+        if (!$request->database_name || !$request->user_name || !$request->password) {
             return responseJson('Please check required Fields', 422);
         }
 
-        $configData = 'host=' . ($request->database_host ? $request->database_host : 'localhost' ) . PHP_EOL;
-        $configData .= 'database=' . $request->database_name . PHP_EOL;
-        $configData .= 'user_name=' . $request->user_name . PHP_EOL;
-        $configData .= 'password=' . $request->password . PHP_EOL;
+        $configData = 'host='.($request->database_host ? $request->database_host : 'localhost').PHP_EOL;
+        $configData .= 'database='.$request->database_name.PHP_EOL;
+        $configData .= 'user_name='.$request->user_name.PHP_EOL;
+        $configData .= 'password='.$request->password.PHP_EOL;
 
         // generate env file
         EnvManager::createEnvFile($configData);

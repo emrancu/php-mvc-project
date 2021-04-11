@@ -22,7 +22,6 @@ interface Container
     public function call($callable, $parameters = []);
 
 
-
     /**
      * @param $class
      * @param $parameters
