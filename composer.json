@@ -1,0 +1,19 @@
+{
+  "name": "test/phpmvc",
+  "type": "project",
+  "description": "PHP MVC Project",
+  "keywords": [
+    "PHP MVC Project",
+    "Test MVC in PHP"
+  ],
+  "license": "MIT",
+  "autoload": {
+    "classmap": [],
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "require": {
+    "ext-json": "*"
+  }
+}
